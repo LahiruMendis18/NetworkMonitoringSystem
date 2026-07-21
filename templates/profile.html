@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitoring You · My Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #070b11; --surface: #0f172a; --surface2: #141d2e;
+  --border: #1e2d45; --border2: #253550;
+  --accent: #00c9ff; --accent2: #0066ff;
+  --green: #00e5a0; --red: #ff3e5e; --yellow: #ffb83e;
+  --text: #d8e5f5; --muted: #4a6585; --muted2: #7a95b5;
+  --mono: 'JetBrains Mono', monospace; --sans: 'Inter', sans-serif;
+  --r: 10px;
+}
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── TOPBAR ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; height: 60px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.logo-icon {
+  width: 34px; height: 34px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+}
+.logo-icon svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.logo-name { font-family: var(--mono); font-size: 17px; font-weight: 500; letter-spacing: -.3px; }
+.logo-name span { color: var(--accent); }
+
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--muted2); text-decoration: none; font-size: 13.5px;
+  border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px;
+  transition: border-color .2s, color .2s;
+}
+.back-btn:hover { border-color: var(--accent); color: var(--accent); }
+.back-btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
+
+/* ── MAIN ── */
+.main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 36px 24px 60px;
+}
+
+.profile-header {
+  display: flex; align-items: center; gap: 18px;
+  margin-bottom: 32px;
+}
+
+.avatar {
+  width: 64px; height: 64px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 700; color: #fff;
+  font-family: var(--mono); flex-shrink: 0;
+}
+
+.profile-header h1 { font-size: 22px; font-weight: 700; letter-spacing: -.4px; margin-bottom: 4px; }
+.profile-header p { font-size: 13px; color: var(--muted); font-family: var(--mono); }
+
+/* ── CARDS ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  margin-bottom: 22px;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-header svg { width: 16px; height: 16px; stroke: var(--accent); fill: none; stroke-width: 2; }
+.card-header h2 { font-size: 14px; font-weight: 600; }
+.card-header p { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.card-body { padding: 22px; }
+
+.field { margin-bottom: 18px; }
+.field:last-child { margin-bottom: 0; }
+
+label {
+  display: block; font-size: 11px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: var(--muted); margin-bottom: 8px;
+}
+
+input[type=text], input[type=email], input[type=tel], input[type=password] {
+  width: 100%;
+  background: rgba(0,201,255,.04);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--mono); font-size: 13.5px;
+  padding: 11px 14px; border-radius: 8px;
+  outline: none; transition: border-color .2s, box-shadow .2s;
+}
+input:focus { border-color: rgba(0,201,255,.5); box-shadow: 0 0 0 3px rgba(0,201,255,.09); }
+input:read-only { color: var(--muted2); cursor: default; opacity: .8; }
+input::placeholder { color: var(--muted); }
+
+.row { display: flex; gap: 14px; }
+.row .field { flex: 1; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 20px; border-radius: 8px; border: none;
+  font-family: var(--sans); font-size: 13.5px; font-weight: 600;
+  cursor: pointer; transition: opacity .2s, transform .1s;
+}
+.btn:active { transform: scale(.98); }
+.btn-primary { background: linear-gradient(135deg, var(--accent2), var(--accent)); color: #fff; }
+.btn-primary:hover { opacity: .88; }
+.btn svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.3; }
+
+.btn-row { display: flex; justify-content: flex-end; margin-top: 18px; gap: 10px; }
+
+.msg {
+  border-radius: 8px; font-size: 12.5px; padding: 10px 14px;
+  margin-bottom: 16px; display: flex; align-items: center; gap: 8px; font-weight: 500;
+  display: none;
+}
+.msg.show { display: flex; }
+.msg.error   { background: rgba(255,64,96,.1);  border: 1px solid rgba(255,64,96,.3);  color: #ff8099; }
+.msg.success { background: rgba(0,229,160,.1);  border: 1px solid rgba(0,229,160,.3);  color: #00e5a0; }
+.msg svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+.strength-bar { height: 3px; border-radius: 2px; margin-top: 7px; background: var(--border); overflow: hidden; }
+.strength-fill { height: 100%; border-radius: 2px; width: 0%; transition: width .3s, background .3s; }
+.strength-label { font-size: 10px; color: var(--muted); margin-top: 4px; }
+
+.info-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+.info-row:last-child { border-bottom: none; }
+.info-row .info-label { color: var(--muted); }
+.info-row .info-value { font-family: var(--mono); color: var(--text); }
+
+.toasts {
+  position: fixed; bottom: 24px; right: 24px;
+  display: flex; flex-direction: column; gap: 10px; z-index: 999;
+}
+.toast {
+  background: var(--surface2); border: 1px solid var(--border2); border-radius: 9px;
+  padding: 12px 18px; font-size: 13.5px; color: var(--text);
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+  animation: toast-in .25s ease; max-width: 300px;
+}
+.toast.success { border-left: 3px solid var(--green); }
+.toast.error   { border-left: 3px solid var(--red); }
+@keyframes toast-in { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="logo" href="/">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    </div>
+    <span class="logo-name">Monitoring<span> You</span></span>
+  </a>
+  <a class="back-btn" href="/">
+    <svg viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to Dashboard
+  </a>
+</nav>
+
+<main class="main">
+
+  <div class="profile-header">
+    <div class="avatar" id="avatarInitial">{{ user.username[0]|upper }}</div>
+    <div>
+      <h1>{{ user.username }}</h1>
+      <p>Member since {{ user.created.split(' ')[0] if user.created else 'unknown' }}</p>
+    </div>
+  </div>
+
+  <!-- ── ACCOUNT OVERVIEW ── -->
+  <div class="card">
+    <div class="card-header">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div>
+        <h2>Account Overview</h2>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="info-row">
+        <span class="info-label">Username</span>
+        <span class="info-value">{{ user.username }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <span class="info-value">{{ user.email if user.email else '— not set —' }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Phone</span>
+        <span class="info-value">{{ user.phone if user.phone else '— not set —' }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Account created</span>
+        <span class="info-value">{{ user.created }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EDIT CONTACT INFO ── -->
+  <div class="card">
+    <div class="card-header">
+      <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+      <div>
+        <h2>Contact &amp; Notifications</h2>
+        <p>Used for login alerts, status reports, and password resets</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="msg error" id="contact-error"></div>
+      <div class="msg success" id="contact-success"></div>
+
+      <div class="row">
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" id="profile-email" placeholder="you@example.com" value="{{ user.email or '' }}">
+        </div>
+        <div class="field">
+          <label>Phone Number</label>
+          <input type="tel" id="profile-phone" placeholder="+94771234567" value="{{ user.phone or '' }}">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="saveContact()">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CHANGE PASSWORD ── -->
+  <div class="card">
+    <div class="card-header">
+      <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <div>
+        <h2>Change Password</h2>
+        <p>You'll need your current password to confirm this change</p>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="msg error" id="pw-error"></div>
+      <div class="msg success" id="pw-success"></div>
+
+      <div class="field">
+        <label>Current Password</label>
+        <input type="password" id="current-pw" placeholder="Enter current password" autocomplete="current-password">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>New Password</label>
+          <input type="password" id="new-pw" placeholder="Min. 6 characters" autocomplete="new-password" oninput="checkStrength(this.value)">
+          <div class="strength-bar"><div class="strength-fill" id="sfill"></div></div>
+          <div class="strength-label" id="slabel"></div>
+        </div>
+        <div class="field">
+          <label>Confirm New Password</label>
+          <input type="password" id="confirm-pw" placeholder="Re-enter new password" autocomplete="new-password">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="changePassword()">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Update Password
+        </button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="toasts" id="toasts"></div>
+
+<script>
+function showMsg(id, text, type) {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'msg ' + type + ' show';
+}
+function hideMsg(id) {
+  document.getElementById(id).classList.remove('show');
+}
+
+function toast(msg, type) {
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  const icon = type === 'success'
+    ? '<svg width="16" height="16" fill="none" stroke="#00e5a0" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>'
+    : '<svg width="16" height="16" fill="none" stroke="#ff3e5e" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+  el.innerHTML = icon + msg;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(() => el.remove(), 4000);
+}
+
+async function saveContact() {
+  hideMsg('contact-error'); hideMsg('contact-success');
+  const email = document.getElementById('profile-email').value.trim();
+  const phone = document.getElementById('profile-phone').value.trim();
+
+  if (!email && !phone) {
+    showMsg('contact-error', 'Please provide at least an email address or phone number.', 'error');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/profile', {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ email, phone })
+    });
+    const data = await res.json();
+    if (!res.ok) { showMsg('contact-error', data.error || 'Failed to update.', 'error'); return; }
+    showMsg('contact-success', 'Contact information updated.', 'success');
+    toast('Profile updated', 'success');
+  } catch (e) {
+    showMsg('contact-error', 'Connection error. Is the server running?', 'error');
+  }
+}
+
+async function changePassword() {
+  hideMsg('pw-error'); hideMsg('pw-success');
+  const current = document.getElementById('current-pw').value;
+  const newPw   = document.getElementById('new-pw').value;
+  const confirm = document.getElementById('confirm-pw').value;
+
+  if (!current || !newPw || !confirm) {
+    showMsg('pw-error', 'All fields are required.', 'error');
+    return;
+  }
+  if (newPw.length < 6) {
+    showMsg('pw-error', 'New password must be at least 6 characters.', 'error');
+    return;
+  }
+  if (newPw !== confirm) {
+    showMsg('pw-error', 'New passwords do not match.', 'error');
+    return;
+  }
+
+  try {
+    const res = await fetch('/api/profile/password', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        current_password: current,
+        new_password: newPw,
+        confirm_password: confirm
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) { showMsg('pw-error', data.error || 'Failed to change password.', 'error'); return; }
+
+    showMsg('pw-success', 'Password updated successfully.', 'success');
+    toast('Password changed', 'success');
+    document.getElementById('current-pw').value = '';
+    document.getElementById('new-pw').value = '';
+    document.getElementById('confirm-pw').value = '';
+    document.getElementById('sfill').style.width = '0%';
+    document.getElementById('slabel').textContent = '';
+  } catch (e) {
+    showMsg('pw-error', 'Connection error. Is the server running?', 'error');
+  }
+}
+
+function checkStrength(pw) {
+  const fill = document.getElementById('sfill');
+  const lbl  = document.getElementById('slabel');
+  let score = 0;
+  if (pw.length >= 6)  score++;
+  if (pw.length >= 10) score++;
+  if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+  if (/\d/.test(pw))   score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  const map = [
+    {w:'0%',c:'',t:''},
+    {w:'25%',c:'#ff3e5e',t:'Weak'},
+    {w:'50%',c:'#ffb83e',t:'Fair'},
+    {w:'75%',c:'#00c9ff',t:'Good'},
+    {w:'100%',c:'#00e5a0',t:'Strong'},
+  ];
+  const s = map[Math.min(score,4)];
+  fill.style.width = s.w; fill.style.background = s.c;
+  lbl.textContent  = s.t; lbl.style.color = s.c;
+}
+</script>
+</body>
+</html>

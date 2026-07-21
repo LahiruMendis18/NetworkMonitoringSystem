@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetPulse · Create Account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:      #080c12;
+    --surface: #0d1320;
+    --border:  #1e2d45;
+    --accent:  #00c9ff;
+    --accent2: #0066ff;
+    --text:    #e0e8f5;
+    --muted:   #5a7090;
+    --danger:  #ff4060;
+    --green:   #00e5a0;
+    --mono:    'JetBrains Mono', monospace;
+    --sans:    'Inter', sans-serif;
+  }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,201,255,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,201,255,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: grid-drift 20s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes grid-drift { from { background-position: 0 0; } to { background-position: 40px 40px; } }
+  .orb {
+    position: fixed;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,102,255,.12) 0%, transparent 70%);
+    bottom: -150px; right: -100px;
+    pointer-events: none;
+  }
+  .card {
+    position: relative;
+    z-index: 1;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 44px 44px;
+    width: 100%;
+    max-width: 460px;
+    box-shadow: 0 0 0 1px rgba(0,201,255,.05), 0 32px 64px rgba(0,0,0,.6);
+  }
+  .logo-row {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 32px;
+  }
+  .logo-icon {
+    width: 38px; height: 38px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-icon svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; }
+  .logo-text { font-family: var(--mono); font-size: 19px; font-weight: 500; letter-spacing: -.3px; }
+  .logo-text span { color: var(--accent); }
+  h1 { font-size: 24px; font-weight: 600; margin-bottom: 6px; letter-spacing: -.4px; }
+  .sub { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 7px; }
+  input[type=text], input[type=password], input[type=email], input[type=tel] {
+    width: 100%;
+    background: rgba(0,201,255,.04);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13.5px;
+    padding: 11px 14px;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  input:focus { border-color: rgba(0,201,255,.5); box-shadow: 0 0 0 3px rgba(0,201,255,.09); }
+  input::placeholder { color: var(--muted); }
+
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 6px 0 16px;
+    color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .contact-note {
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-bottom: 16px;
+    padding: 10px 13px;
+    background: rgba(0,201,255,.05);
+    border: 1px solid rgba(0,201,255,.12);
+    border-radius: 7px;
+    line-height: 1.6;
+  }
+
+  .row { display: flex; gap: 12px; }
+  .row .field { flex: 1; }
+
+  .error-box {
+    background: rgba(255,64,96,.1);
+    border: 1px solid rgba(255,64,96,.3);
+    border-radius: 8px;
+    color: #ff8099;
+    font-size: 13px;
+    padding: 11px 14px;
+    margin-bottom: 18px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn {
+    display: block; width: 100%; padding: 13px;
+    border-radius: 8px; border: none; cursor: pointer;
+    font-family: var(--sans); font-size: 15px; font-weight: 600;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #fff; letter-spacing: .01em;
+    transition: opacity .2s, transform .1s;
+    margin-top: 22px;
+  }
+  .btn:hover { opacity: .9; }
+  .btn:active { transform: scale(.98); }
+  .signin-link {
+    text-align: center; margin-top: 20px; font-size: 13px; color: var(--muted);
+  }
+  .signin-link a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .signin-link a:hover { text-decoration: underline; }
+  .strength-bar { height: 3px; border-radius: 2px; margin-top: 7px; background: var(--border); overflow: hidden; }
+  .strength-fill { height: 100%; border-radius: 2px; width: 0%; transition: width .3s, background .3s; }
+  .strength-label { font-size: 10px; color: var(--muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="orb"></div>
+
+<div class="card">
+  <div class="logo-row">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    </div>
+    <span class="logo-text">Net<span>Pulse</span></span>
+  </div>
+
+  <h1>Create Account</h1>
+  <p class="sub">Set up your NetPulse monitoring account</p>
+
+  {% if error %}
+  <div class="error-box">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+    </svg>
+    {{ error }}
+  </div>
+  {% endif %}
+
+  <form method="POST" novalidate>
+    <!-- Account -->
+    <div class="field">
+      <label>Username</label>
+      <input type="text" name="username" placeholder="e.g. lahiru_admin" autocomplete="username" required
+             minlength="3" maxlength="40" value="{{ request.form.get('username', '') }}">
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <input type="password" name="password" id="pw" placeholder="Min. 6 characters"
+             autocomplete="new-password" required minlength="6"
+             oninput="checkStrength(this.value)">
+      <div class="strength-bar"><div class="strength-fill" id="sfill"></div></div>
+      <div class="strength-label" id="slabel"></div>
+    </div>
+
+    <div class="field">
+      <label>Confirm Password</label>
+      <input type="password" name="confirm" placeholder="Re-enter password"
+             autocomplete="new-password" required>
+    </div>
+
+    <!-- Contact -->
+    <div class="divider">Notification Contact</div>
+    <div class="contact-note">
+      Provide at least one contact method. NetPulse will send login alerts and device status reports here.
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="you@example.com"
+               autocomplete="email" value="{{ request.form.get('email', '') }}">
+      </div>
+      <div class="field">
+        <label>Phone Number</label>
+        <input type="tel" name="phone" placeholder="+94771234567"
+               autocomplete="tel" value="{{ request.form.get('phone', '') }}">
+      </div>
+    </div>
+
+    <button class="btn" type="submit">Create Account →</button>
+  </form>
+
+  <div class="signin-link">
+    Already have an account? <a href="/login">Sign in</a>
+  </div>
+</div>
+
+<script>
+function checkStrength(pw) {
+  const fill  = document.getElementById('sfill');
+  const label = document.getElementById('slabel');
+  let score = 0;
+  if (pw.length >= 6)  score++;
+  if (pw.length >= 10) score++;
+  if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) score++;
+  if (/\d/.test(pw))   score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+
+  const map = [
+    {w:'0%',   c:'',         t:''},
+    {w:'25%',  c:'#ff3e5e', t:'Weak'},
+    {w:'50%',  c:'#ffb83e', t:'Fair'},
+    {w:'75%',  c:'#00c9ff', t:'Good'},
+    {w:'100%', c:'#00e5a0', t:'Strong'},
+  ];
+  const s = map[Math.min(score, 4)];
+  fill.style.width      = s.w;
+  fill.style.background = s.c;
+  label.textContent     = s.t;
+  label.style.color     = s.c;
+}
+</script>
+</body>
+</html>
